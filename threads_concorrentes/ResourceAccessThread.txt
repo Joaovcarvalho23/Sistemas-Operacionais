@@ -1,6 +1,0 @@
-class ResourceAccessThread extends Thread{
-    public void run() {
-        SharedResources.accessResource1();
-        SharedResources.accessResource2();
-    }
-}
