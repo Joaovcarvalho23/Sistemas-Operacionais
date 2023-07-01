@@ -1,0 +1,8 @@
+public class ConcurrentThreadsExample {
+     public static void main(String[] args) {
+        for (int i = 0; i < 5; i++) {
+            ResourceAccessThread thread = new ResourceAccessThread();
+            thread.start();
+        }
+    }
+}

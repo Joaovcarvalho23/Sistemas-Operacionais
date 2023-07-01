@@ -1,0 +1,36 @@
+import java.util.concurrent.Semaphore;
+
+public class SharedResources {
+    public static int resource1 = 0;
+    public static int resource2 = 0;
+    private static Semaphore semaphore1 = new Semaphore(1);
+    private static Semaphore semaphore2 = new Semaphore(1);
+
+    public static void accessResource1() {
+        try {
+            semaphore1.acquire();
+            System.out.println("Thread " + Thread.currentThread().getId() + " is accessing resource1.");
+            Thread.sleep(2000);
+            resource1++;
+            System.out.println("Thread " + Thread.currentThread().getId() + " released resource1.");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            semaphore1.release();
+        }
+    }
+
+    public static void accessResource2() {
+        try {
+            semaphore2.acquire();
+            System.out.println("Thread " + Thread.currentThread().getId() + " is accessing resource2.");
+            Thread.sleep(2000);
+            resource2++;
+            System.out.println("Thread " + Thread.currentThread().getId() + " released resource2.");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            semaphore2.release();
+        }
+    }
+}
