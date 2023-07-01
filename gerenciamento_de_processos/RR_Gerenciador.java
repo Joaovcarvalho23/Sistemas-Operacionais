@@ -49,7 +49,8 @@ class RR_Gerenciador {
 
             for (int i = 0; i < timeSlice; i++) {
                 processoAtual.decrementarTempoRestanteCPU();
-                System.out.println("Processo " + processoAtual.getNome() + " executado por 1 unidade de tempo.");            }
+                System.out.println("Processo " + processoAtual.getNome() + " executado por 1 unidade de tempo.");
+            }
 
             temposRestantes[indiceProcessoAtual] = processoAtual.getTempoRestanteCPU();
 
