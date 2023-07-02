@@ -1,6 +1,6 @@
 /*Classe que implementa um Processo com os atributos necessários para serem gerenciados pelo algoritmo Round-robin*/
 
-class RR_Processo {
+public class PP_Processo {
     private int id;
     private String nome;
     private int prioridade;
@@ -8,7 +8,7 @@ class RR_Processo {
     private int tempoTotalCPU;
     private int tempoRestanteCPU;
 
-    public RR_Processo(int id, String nome, int prioridade, boolean ioBound, int tempoTotalCPU) {
+    public PP_Processo(int id, String nome, int prioridade, boolean ioBound, int tempoTotalCPU) {
         this.id = id;
         this.nome = nome;
         this.prioridade = prioridade;
@@ -43,5 +43,9 @@ class RR_Processo {
 
     public void decrementarTempoRestanteCPU() {
         tempoRestanteCPU--;
+    }
+
+    public void decrementarPrioridade() {
+        prioridade--;
     }
 }
