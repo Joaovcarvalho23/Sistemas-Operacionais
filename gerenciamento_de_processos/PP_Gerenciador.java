@@ -23,6 +23,13 @@ public class PP_Gerenciador {
 
     public void run() {
     while (!filaDeProntos.isEmpty()) {
+        String t;
+        for(PP_Processo p: filaDeProntos){
+            if(p.isIoBound()) t = "IO Bound"; else t = "CPU Bound";
+            System.out.println("Nome: " + p.getNome() + ", ID: " + p.getId() + ", Prioridade: " 
+            + p.getPrioridade() + ", Tipo: " + t + ", TT CPU: " + p.getTempoTotalCPU());
+        }
+
         PP_Processo processoAtual = filaDeProntos.poll();
         System.out.println("Processo " + processoAtual.getNome() + " está executando.");
 
