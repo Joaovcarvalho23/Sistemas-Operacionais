@@ -1,3 +1,5 @@
+/*Classe que implementa um Processo com os atributos necessários para serem gerenciados pelo algoritmo Round-robin*/
+
 class RR_Processo {
     private int id;
     private String nome;

@@ -3,6 +3,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+/*Classe que implementa um Gerencisaor de Processos 
+conforme o aloritmo de escalonamento Round-robin (sem prioridade)*/
+
 class RR_Gerenciador {
     private Queue<RR_Processo> filaDeProntos;
     private List<RR_Processo> processos;
@@ -19,6 +22,14 @@ class RR_Gerenciador {
         processos.add(processo);
         filaDeProntos.add(processo);
     }
+
+    /* 
+     * Método que simula fila de gerenciamento de processos
+     * conforme o algoritmo RR:
+     * Atribui um certo tempo de quantum para cada Processo
+     * e os executa conforme chegada na fila, sem levar sua
+     * prioridade em conta.
+    */
 
     public void run() {
         int lengthProcessos = processos.size();
@@ -83,7 +94,7 @@ class RR_Gerenciador {
         System.out.println("\nTempos de turnaround: ");
         for (RR_Processo processo : processos) {
             int turnaroundTime = processo.getTempoTotalCPU();
-            System.out.println("Process " + processo.getNome() + ": " + turnaroundTime);
+            System.out.println("Processo " + processo.getNome() + ": " + turnaroundTime);
         }
     }
 }
