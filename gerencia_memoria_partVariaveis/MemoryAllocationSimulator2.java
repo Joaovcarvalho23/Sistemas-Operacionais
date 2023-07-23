@@ -1,10 +1,6 @@
-package gerencia_memoria_partFixas;
+package gerencia_memoria_partVariaveis;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 class Process {
     String name;
@@ -30,7 +26,8 @@ class MemoryBlock {
     }
 }
 
-public class MemoryAllocationSimulator {
+//Alocamento first-fit
+public class MemoryAllocationSimulator2 {
     private static int memorySize;
     private static List<MemoryBlock> memoryBlocks = new ArrayList<>();
     private static List<Process> processes = new ArrayList<>();
@@ -60,7 +57,7 @@ public class MemoryAllocationSimulator {
                     createProcess();
                     break;
                 case 2:
-                    allocateProcessBestFit();
+                    allocateProcessFirstFit();
                     break;
                 case 3:
                     displayMemoryState();
@@ -72,7 +69,7 @@ public class MemoryAllocationSimulator {
                     removeProcessSwapping();
                     break;
                 case 0:
-                    System.out.println("Encerrando o simulador de alocação de memória. Até logo!");
+                    System.out.println("Encerrando o simulador.");
                     break;
                 default:
                     System.out.println("Opção inválida! Tente novamente.");
@@ -84,7 +81,7 @@ public class MemoryAllocationSimulator {
     private static void displayMenu() {
         System.out.println("\n===== Menu =====");
         System.out.println("1. Criar processo");
-        System.out.println("2. Alocar processo (Best-Fit)");
+        System.out.println("2. Alocar processo (First-Fit)");
         System.out.println("3. Exibir estado da memória");
         System.out.println("4. Compactar memória");
         System.out.println("5. Remover processo (swapping)");
@@ -105,12 +102,12 @@ public class MemoryAllocationSimulator {
         Process process = new Process(name, nextId, size);
         processes.add(process);
 
-        System.out.println("Processo criado com sucesso!");
+        System.out.println("\n\nProcesso criado com sucesso!");
     }
 
-    private static void allocateProcessBestFit() {
+    private static void allocateProcessFirstFit() {
         if (processes.isEmpty()) {
-            System.out.println("Não existem processos criados!");
+            System.out.println("\n\nNão existem processos criados!");
             return;
         }
 
@@ -119,28 +116,29 @@ public class MemoryAllocationSimulator {
 
         Process process = findProcessById(id);
         if (process == null) {
-            System.out.println("Processo não encontrado!");
+            System.out.println("\n\nProcesso não encontrado!");
             return;
         }
 
-        MemoryBlock bestFitBlock = findBestFitBlock(process.size);
-        if (bestFitBlock != null) {
-            if (bestFitBlock.size == process.size) {
-                bestFitBlock.process = process;
+        MemoryBlock firstFitBlock = findFirstFitBlock(process.size);
+        if (firstFitBlock != null) {
+            if (firstFitBlock.size == process.size) {
+                firstFitBlock.process = process;
             } else {
-                splitMemoryBlock(bestFitBlock, process.size);
+                splitMemoryBlock(firstFitBlock, process.size);
             }
+            System.out.println("\n\nProcesso " + process.name + " alocado com sucesso!");
         } else {
-            System.out.println("Não há espaço disponível para alocar o processo " + process.name + ".");
+            System.out.println("\n\nNão há espaço disponível para alocar o processo " + process.name + ".");
         }
 
-        if(bestFitBlock != null){
-            if (bestFitBlock.size == process.size) {
-                bestFitBlock.process = process;
+        if(firstFitBlock != null){
+            if (firstFitBlock.size == process.size) {
+                firstFitBlock.process = process;
+            } else {
+                splitMemoryBlock(firstFitBlock, process.size);
             }
-            System.out.println("Processo " + process.name + " alocado com sucesso!");
         }
-
     }
 
     private static Process findProcessById(int id) {
@@ -152,16 +150,13 @@ public class MemoryAllocationSimulator {
         return null;
     }
 
-    private static MemoryBlock findBestFitBlock(int processSize) {
-        MemoryBlock bestFitBlock = null;
+    private static MemoryBlock findFirstFitBlock(int processSize) {
         for (MemoryBlock block : memoryBlocks) {
             if (block.process == null && block.size >= processSize) {
-                if (bestFitBlock == null || block.size < bestFitBlock.size) {
-                    bestFitBlock = block;
-                }
+                return block;
             }
         }
-        return bestFitBlock;
+        return null;
     }
 
     private static void splitMemoryBlock(MemoryBlock block, int processSize) {
@@ -214,12 +209,12 @@ public class MemoryAllocationSimulator {
             currentAddress += block.size;
         }
 
-        System.out.println("Memória compactada com sucesso!");
+        System.out.println("\n\nMemória compactada com sucesso!");
     }
 
     private static void removeProcessSwapping() {
         if (processes.isEmpty()) {
-            System.out.println("Não existem processos criados!");
+            System.out.println("\n\nNão existem processos criados!");
             return;
         }
 
@@ -228,16 +223,16 @@ public class MemoryAllocationSimulator {
 
         Process processToRemove = findProcessById(id);
         if (processToRemove == null) {
-            System.out.println("Processo não encontrado!");
+            System.out.println("\n\nProcesso não encontrado!");
             return;
         }
 
         MemoryBlock blockToRemove = findMemoryBlockByProcess(processToRemove);
         if (blockToRemove != null) {
             blockToRemove.process = null;
-            System.out.println("Processo removido da memória (swapping).");
+            System.out.println("\n\nProcesso removido da memória (swapping).");
         } else {
-            System.out.println("O processo " + processToRemove.name + " (ID: " + processToRemove.id + ") não está alocado na memória.");
+            System.out.println("\n\nO processo " + processToRemove.name + " (ID: " + processToRemove.id + ") não está alocado na memória.");
         }
     }
 
@@ -250,4 +245,3 @@ public class MemoryAllocationSimulator {
         return null;
     }
 }
-
