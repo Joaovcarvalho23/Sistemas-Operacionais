@@ -2,26 +2,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
 class Arquivo {
     String nome;
     int tamanho;
-    List<Integer> blocosAlocados;
 
     public Arquivo(String nome, int tamanho) {
         this.nome = nome;
         this.tamanho = tamanho;
-        this.blocosAlocados = new ArrayList<>();
     }
 }
 
-class Diretorio {
-    String nome;
+class Diretorio extends Arquivo {
     Map<String, Arquivo> arquivos;
 
     public Diretorio(String nome) {
-        this.nome = nome;
+        super(nome, 0); // Um diretório não ocupa espaço de memória diretamente
         this.arquivos = new HashMap<>();
     }
 }
@@ -70,8 +66,8 @@ class SimuladorSistemaArquivos {
         Diretorio diretorio = encontrarDiretorio(raiz, nomeDiretorio);
         if (diretorio != null) {
             System.out.println("Arquivos no diretório '" + nomeDiretorio + "':");
-            for (String nomeArquivo : diretorio.arquivos.keySet()) {
-                System.out.println("- " + nomeArquivo);
+            for (Arquivo arquivo : diretorio.arquivos.values()) {
+                System.out.println("- " + arquivo.nome);
             }
         } else {
             System.out.println("Diretório não encontrado.");
@@ -110,7 +106,6 @@ class SimuladorSistemaArquivos {
             if (podeAlocar) {
                 for (int j = i; j < i + blocosNecessarios && j < blocosMemoria.size(); j++) {
                     blocosMemoria.set(j, true);
-                    arquivo.blocosAlocados.add(j);
                 }
                 System.out.println("Blocos de memória alocados para '" + arquivo.nome + "'");
                 break;
@@ -119,8 +114,11 @@ class SimuladorSistemaArquivos {
     }
 
     private void desalocarMemoria(Arquivo arquivo) {
-        for (int bloco : arquivo.blocosAlocados) {
-            blocosMemoria.set(bloco, false);
+       // int blocosNecessarios = (int) Math.ceil((double) arquivo.tamanho / tamanhoBloco);
+        for (int i = 0; i < blocosMemoria.size(); i++) {
+            if (blocosMemoria.get(i)) {
+                blocosMemoria.set(i, false);
+            }
         }
         System.out.println("Blocos de memória desalocados de '" + arquivo.nome + "'");
     }
@@ -148,7 +146,7 @@ class SimuladorSistemaArquivos {
         boolean fragmentacaoInterna = false;
         for (Arquivo arquivo : raiz.arquivos.values()) {
             int blocosNecessarios = (int) Math.ceil((double) arquivo.tamanho / tamanhoBloco);
-            int blocosAlocados = arquivo.blocosAlocados.size();
+            int blocosAlocados = (int) Math.ceil((double) arquivo.tamanho / tamanhoBloco);
             if (blocosNecessarios != blocosAlocados) {
                 fragmentacaoInterna = true;
                 break;
