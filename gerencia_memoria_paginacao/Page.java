@@ -112,7 +112,6 @@ class Process {
 // Classe que representa a memória
 class Memory {
     private int physicalMemorySize;
-    private int virtualMemorySize;
     private int pageSize;
     private List<Page> physicalMemory;
     private List<Page> virtualMemory;
@@ -121,7 +120,6 @@ class Memory {
     public Memory(int physicalMemorySize, int virtualMemorySize, int pageSize,
                   PageReplacementAlgorithm pageReplacementAlgorithm) {
         this.physicalMemorySize = physicalMemorySize;
-        this.virtualMemorySize = virtualMemorySize;
         this.pageSize = pageSize;
         this.physicalMemory = new ArrayList<>();
         this.virtualMemory = new ArrayList<>();
